@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
     <h1>リスト一覧</h1>
 
     <ul>
-        <li>サンプルリスト</li>
+        <li th:each="list : ${lists}" th:text="${list.name}"></li>
     </ul>
 
     <form>
