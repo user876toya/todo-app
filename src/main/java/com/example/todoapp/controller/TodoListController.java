@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
-public class TodoappController {
+public class TodoListController {
     @GetMapping("/list")
     public String listPage(Model model) {
         return "list";
