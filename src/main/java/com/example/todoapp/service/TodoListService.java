@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.todoapp.entity.TodoList;
 import com.example.todoapp.repository.TodoListRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -17,5 +18,10 @@ public class TodoListService {
 
     public List<TodoList> findAll() {
         return todoListRepository.findAll();
+    }
+
+    @Transactional
+    public void addList(TodoList todoList) {
+        todoListRepository.save(todoList);
     }
 }
