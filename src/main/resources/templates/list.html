@@ -4,13 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title>リスト一覧</title>
+
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
 
 <body>
     <h1>リスト一覧</h1>
 
     <ul>
-        <li th:each="list : ${lists}" th:text="${list.name}"></li>
+        <li class="p-todolist_item" th:each="list : ${lists}">
+            <span th:text="${list.name}"></span>
+
+            <form th:action="@{/list/{listId}/delete(listId=${list.id})}"
+                  method="post">
+                <button type="submit">削除</button>
+            </form>
+        </li>
     </ul>
 
     <form th:action="@{/list/add}" method="post">
