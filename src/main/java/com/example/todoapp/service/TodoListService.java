@@ -24,4 +24,8 @@ public class TodoListService {
     public void addList(TodoList todoList) {
         todoListRepository.save(todoList);
     }
+    @Transactional
+    public void deleteList(Long listId) {
+        todoListRepository.deleteById(listId);
+    }
 }
