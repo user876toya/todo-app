@@ -18,6 +18,11 @@
         </li>
     </ul>
 
+    <form th:action="@{/lists/{listId}/tasks(listId=${listId})}" method="post">
+        <input type="text" name="content" placeholder="タスク名を入力">
+        <button type="submit">追加</button>
+    </form>
+
 </body>
 
 </html>
