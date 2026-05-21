@@ -1,5 +1,7 @@
 package com.example.todoapp.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.todoapp.service.TaskService;
 
 import lombok.RequiredArgsConstructor;
+
 
 
 
@@ -27,6 +30,16 @@ public class TaskController {
         return "tasks";
     }
 
+    @GetMapping("/lists/{listId}/tasks/{taskId}/edit")
+    public String showTaskEdit(@PathVariable Long listId,
+                               @PathVariable Long taskId,
+                               Model model) {
+
+        model.addAttribute("listId", listId);
+        model.addAttribute("task", taskService.findTaskByIdAndListId(taskId, listId));
+        return "task-edit";
+    }
+
     @PostMapping("/lists/{listId}/tasks")
     public String createTask(@PathVariable Long listId,
                              @RequestParam String content,
@@ -34,4 +47,16 @@ public class TaskController {
         taskService.createTask(listId, content);
         return "redirect:/list/{listId}/tasks";
     }
+
+    @PostMapping("/lists/{listId}/tasks/{taskId}/edit")
+    public String editTask(@PathVariable Long listId,
+                           @PathVariable Long taskId,
+                           @RequestParam String content,
+                           @RequestParam LocalDate dueDate,
+                           @RequestParam boolean done) {
+
+        taskService.updateTask(listId, taskId, content, dueDate, done);
+        return "redirect:/list/{listId}/tasks";
+    }
+
 }

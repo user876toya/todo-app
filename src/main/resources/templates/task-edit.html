@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>タスク編集画面</title>
+
+    <link rel="stylesheet" th:href="@{/css/task-edit.css}">
+</head>
+
+<body>
+    <h1>タスク編集画面</h1>
+
+    <form th:action="@{/lists/{listId}/tasks/{taskId}/edit(listId=${listId}, taskId=${task.id})}" method="post">
+        <input type="text" name="content" th:value="${task.content}">
+        <input type="date" name="dueDate" th:value="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}" required>
+        <select name="done">
+            <option value="false" th:selected="${!task.done}">
+                未完了
+            </option>
+            <option value="true" th:selected="${task.done}">
+                完了
+            </option>
+        </select>
+        <button type="submit">保存</button>
+    </form>
+
+</body>
+
+</html>
