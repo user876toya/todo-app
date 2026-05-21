@@ -13,7 +13,10 @@
 
     <ul>
         <li class="p-tasklist_item" th:each="task : ${tasks}">
-            <span th:text="${task.content}"></span>
+
+            <a th:href="@{/lists/{listId}/tasks/{taskId}/edit(listId=${listId}, taskId=${task.id})}">
+                <span th:text="${task.content}"></span>
+            </a>
 
         </li>
     </ul>
