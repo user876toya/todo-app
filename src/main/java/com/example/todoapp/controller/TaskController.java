@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class TaskController {
 
     private final TaskService taskService;
-    @GetMapping("/list/{listId}/tasks")
+    @GetMapping("/lists/{listId}/tasks")
     public String showTasks(@PathVariable Long listId,
                                 Model model) {
         model.addAttribute("listId", listId);
@@ -42,10 +42,9 @@ public class TaskController {
 
     @PostMapping("/lists/{listId}/tasks")
     public String createTask(@PathVariable Long listId,
-                             @RequestParam String content,
-                             Model model) {
+                             @RequestParam String content) {
         taskService.createTask(listId, content);
-        return "redirect:/list/{listId}/tasks";
+        return "redirect:/lists/{listId}/tasks";
     }
 
     @PostMapping("/lists/{listId}/tasks/{taskId}/edit")
@@ -56,7 +55,7 @@ public class TaskController {
                            @RequestParam boolean done) {
 
         taskService.updateTask(listId, taskId, content, dueDate, done);
-        return "redirect:/list/{listId}/tasks";
+        return "redirect:/lists/{listId}/tasks";
     }
 
 }

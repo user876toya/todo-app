@@ -14,17 +14,17 @@
     <ul>
         <li class="p-todolist_item" th:each="list : ${lists}">
 
-            <a class="p-todolist_link" th:href="@{/list/{listId}/tasks(listId=${list.id})}">
+            <a class="p-todolist_link" th:href="@{/lists/{listId}/tasks(listId=${list.id})}">
                 <span th:text="${list.name}"></span>
             </a>
 
-            <form th:action="@{/list/{listId}/delete(listId=${list.id})}" method="post">
+            <form th:action="@{/lists/{listId}/delete(listId=${list.id})}" method="post">
                 <button type="submit">削除</button>
             </form>
         </li>
     </ul>
 
-    <form th:action="@{/list/add}" method="post">
+    <form th:action="@{/lists}" method="post">
         <input type="text" name="name" placeholder="リスト名を入力">
         <button type="submit">追加</button>
     </form>

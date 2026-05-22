@@ -20,23 +20,23 @@ import lombok.RequiredArgsConstructor;
 public class TodoListController {
 
     private final TodoListService todoListService;
-    @GetMapping("/list")
+    @GetMapping("/lists")
     public String listPage(Model model) {
         model.addAttribute("lists", todoListService.findAll());
         return "list";
     }
 
-    @PostMapping("/list/add")
+    @PostMapping("/lists")
     public String listAdd(@RequestParam String name) {
         TodoList todoList = new TodoList();
         todoList.setName(name);
         todoListService.addList(todoList);
-        return "redirect:/list";
+        return "redirect:/lists";
     }
 
-    @PostMapping("/list/{listId}/delete")
+    @PostMapping("/lists/{listId}/delete")
     public String deleteList(@PathVariable Long listId) {
         todoListService.deleteList(listId);
-        return "redirect:/list";
+        return "redirect:/lists";
     }
 }
