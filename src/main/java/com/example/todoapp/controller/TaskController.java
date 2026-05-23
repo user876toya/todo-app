@@ -13,10 +13,6 @@ import com.example.todoapp.service.TaskService;
 
 import lombok.RequiredArgsConstructor;
 
-
-
-
-
 @Controller
 @RequiredArgsConstructor
 public class TaskController {
@@ -46,6 +42,14 @@ public class TaskController {
         taskService.createTask(listId, content);
         return "redirect:/lists/{listId}/tasks";
     }
+
+    @PostMapping("/lists/{listId}/tasks/{taskId}/delete")
+    public String deleteTask(@PathVariable Long listId,
+                             @PathVariable Long taskId) {
+        taskService.deleteTask(listId, taskId);
+        return "redirect:/lists/{listId}/tasks";
+    }
+    
 
     @PostMapping("/lists/{listId}/tasks/{taskId}/edit")
     public String editTask(@PathVariable Long listId,

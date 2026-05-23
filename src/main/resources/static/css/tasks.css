@@ -1,0 +1,5 @@
+.p-tasklist_item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

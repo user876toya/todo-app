@@ -44,6 +44,12 @@ public class TaskService {
     }
 
     @Transactional
+    public void deleteTask(Long listId, Long taskId) {
+        Task task = findTaskByIdAndListId(taskId, listId);
+        taskRepository.delete(task);
+    }
+
+    @Transactional
     public void updateTask(Long listId, Long taskId, String content, LocalDate dueDate, boolean done) {
         Task task = findTaskByIdAndListId(taskId, listId);
         task.setContent(content);
