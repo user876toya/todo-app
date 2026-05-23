@@ -18,6 +18,11 @@
                 <span th:text="${task.content}"></span>
             </a>
 
+            <form th:action="@{/lists/{listId}/tasks/{taskId}/delete(listId=${listId}, taskId=${task.id})}"
+                method="post" onsubmit="return confirm('このタスクを削除しますか？');">
+                <button type="submit">削除</button>
+            </form>
+
         </li>
     </ul>
 
