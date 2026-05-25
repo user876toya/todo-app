@@ -3,3 +3,7 @@
     align-items: center;
     gap: 8px;
 }
+.p-tasklist_content {
+    display: flex;
+    gap: 12px;
+}
