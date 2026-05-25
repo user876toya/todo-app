@@ -14,9 +14,16 @@
     <ul>
         <li class="p-tasklist_item" th:each="task : ${tasks}">
 
-            <a th:href="@{/lists/{listId}/tasks/{taskId}/edit(listId=${listId}, taskId=${task.id})}">
-                <span th:text="${task.content}"></span>
-            </a>
+            <div class="p-tasklist_content">
+                <a th:href="@{/lists/{listId}/tasks/{taskId}/edit(listId=${listId}, taskId=${task.id})}">
+                    <span th:text="${task.content}"></span>
+                </a>
+    
+                <span class="p-tasklist_duedate" th:if="${task.dueDate != null}"
+                    th:text="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}">
+                </span>
+            </div>
+
 
             <form th:action="@{/lists/{listId}/tasks/{taskId}/delete(listId=${listId}, taskId=${task.id})}"
                 method="post" onsubmit="return confirm('このタスクを削除しますか？');">
