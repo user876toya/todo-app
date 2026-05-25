@@ -26,8 +26,9 @@
         </li>
     </ul>
 
-    <form th:action="@{/lists/{listId}/tasks(listId=${listId})}" method="post">
-        <input type="text" name="content" placeholder="タスク名を入力">
+    <form th:action="@{/lists/{listId}/tasks(listId=${listId})}" th:object="${taskAddForm}" method="post">
+        <input type="text" th:field="*{content}" placeholder="タスク名を入力">
+        <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
         <button type="submit">追加</button>
     </form>
 
