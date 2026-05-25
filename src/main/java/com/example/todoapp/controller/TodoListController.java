@@ -2,14 +2,15 @@ package com.example.todoapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.todoapp.entity.TodoList;
+import com.example.todoapp.form.TodoListAddForm;
 import com.example.todoapp.service.TodoListService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -23,14 +24,21 @@ public class TodoListController {
     @GetMapping("/lists")
     public String listPage(Model model) {
         model.addAttribute("lists", todoListService.findAll());
+        model.addAttribute("todoListAddForm", new TodoListAddForm());
         return "list";
     }
 
     @PostMapping("/lists")
-    public String listAdd(@RequestParam String name) {
-        TodoList todoList = new TodoList();
-        todoList.setName(name);
-        todoListService.addList(todoList);
+    public String listAdd(@Valid TodoListAddForm todoListAddForm,
+                          BindingResult bindingResult,
+                          Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("lists", todoListService.findAll());
+            model.addAttribute("todoListAddForm", todoListAddForm);
+            return "list";
+        }
+        todoListService.addList(todoListAddForm.getName());
         return "redirect:/lists";
     }
 
