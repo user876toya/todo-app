@@ -24,8 +24,9 @@
         </li>
     </ul>
 
-    <form th:action="@{/lists}" method="post">
-        <input type="text" name="name" placeholder="リスト名を入力">
+    <form th:action="@{/lists}" th:object="${todoListAddForm}" method="post">
+        <input type="text" th:field="*{name}" placeholder="リスト名を入力">
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         <button type="submit">追加</button>
     </form>
 </body>

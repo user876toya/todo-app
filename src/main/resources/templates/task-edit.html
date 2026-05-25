@@ -11,14 +11,18 @@
 <body>
     <h1>タスク編集画面</h1>
 
-    <form th:action="@{/lists/{listId}/tasks/{taskId}/edit(listId=${listId}, taskId=${task.id})}" method="post">
-        <input type="text" name="content" th:value="${task.content}">
-        <input type="date" name="dueDate" th:value="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}" required>
-        <select name="done">
-            <option value="false" th:selected="${!task.done}">
+    <form th:action="@{/lists/{listId}/tasks/{taskId}/edit(listId=${listId}, taskId=${taskId})}"
+        th:object="${taskEditForm}" method="post">
+        <input type="text" th:field="*{content}">
+        <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+
+        <input type="date" th:field="*{dueDate}" required>
+        <div th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
+        <select th:field="*{done}">
+            <option value="false">
                 未完了
             </option>
-            <option value="true" th:selected="${task.done}">
+            <option value="true">
                 完了
             </option>
         </select>

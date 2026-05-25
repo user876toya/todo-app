@@ -1,16 +1,14 @@
 package com.example.todoapp.controller;
 
-import java.time.LocalDate;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.todoapp.form.TaskAddForm;
+import com.example.todoapp.form.TaskEditForm;
 import com.example.todoapp.service.TaskService;
 
 import jakarta.validation.Valid;
@@ -36,7 +34,8 @@ public class TaskController {
                                Model model) {
 
         model.addAttribute("listId", listId);
-        model.addAttribute("task", taskService.findTaskByIdAndListId(taskId, listId));
+        model.addAttribute("taskId", taskId);
+        model.addAttribute("taskEditForm", taskService.findTaskEditForm(taskId, listId));
         return "task-edit";
     }
 
@@ -53,7 +52,7 @@ public class TaskController {
             return "tasks";
         }
 
-        taskService.createTask(listId, taskAddForm.getContent());
+        taskService.createTask(listId, taskAddForm.getContent(), taskAddForm.getDueDate());
         return "redirect:/lists/{listId}/tasks";
     }
 
@@ -68,11 +67,18 @@ public class TaskController {
     @PostMapping("/lists/{listId}/tasks/{taskId}/edit")
     public String editTask(@PathVariable Long listId,
                            @PathVariable Long taskId,
-                           @RequestParam String content,
-                           @RequestParam LocalDate dueDate,
-                           @RequestParam boolean done) {
+                           @Valid TaskEditForm taskEditForm,
+                           BindingResult bindingResult,
+                           Model model) {
 
-        taskService.updateTask(listId, taskId, content, dueDate, done);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("listId", listId);
+            model.addAttribute("taskId", taskId);
+            model.addAttribute("taskEditForm", taskEditForm);
+            return "task-edit";
+        }
+
+        taskService.updateTask(listId, taskId, taskEditForm.getContent(), taskEditForm.getDueDate(), taskEditForm.isDone());
         return "redirect:/lists/{listId}/tasks";
     }
 

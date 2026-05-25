@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.todoapp.entity.Task;
 import com.example.todoapp.entity.TodoList;
+import com.example.todoapp.form.TaskEditForm;
 import com.example.todoapp.repository.TaskRepository;
 import com.example.todoapp.repository.TodoListRepository;
 
@@ -33,12 +34,25 @@ public class TaskService {
     }
 
     @Transactional
-    public void createTask(Long listId, String content) {
+    public TaskEditForm findTaskEditForm(Long taskId, Long listId) {
+        Task task = findTaskByIdAndListId(taskId, listId);
+
+        TaskEditForm taskEditForm = new TaskEditForm();
+        taskEditForm.setContent(task.getContent());
+        taskEditForm.setDueDate(task.getDueDate());
+        taskEditForm.setDone(task.isDone());
+
+        return taskEditForm;
+    }
+
+    @Transactional
+    public void createTask(Long listId, String content, LocalDate dueDate) {
         TodoList todoList = todoListRepository.findById(listId)
                 .orElseThrow(() -> new IllegalArgumentException("リストが見つかりません: " + listId));
 
         Task task = new Task();
         task.setContent(content);
+        task.setDueDate(dueDate);
         task.setTodoList(todoList);
         taskRepository.save(task);
     }

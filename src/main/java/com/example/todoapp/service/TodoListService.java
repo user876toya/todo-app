@@ -21,9 +21,14 @@ public class TodoListService {
     }
 
     @Transactional
-    public void addList(TodoList todoList) {
+    public void addList(String listName) {
+        
+        TodoList todoList = new TodoList();
+        todoList.setName(listName);
+
         todoListRepository.save(todoList);
     }
+
     @Transactional
     public void deleteList(Long listId) {
         todoListRepository.deleteById(listId);
