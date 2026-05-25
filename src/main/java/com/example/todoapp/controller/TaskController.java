@@ -49,9 +49,10 @@ public class TaskController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("listId", listId);
             model.addAttribute("tasks", taskService.findByTodoListId(listId));
+            model.addAttribute("taskAddForm", taskAddForm);
             return "tasks";
         }
-        
+
         taskService.createTask(listId, taskAddForm.getContent());
         return "redirect:/lists/{listId}/tasks";
     }
