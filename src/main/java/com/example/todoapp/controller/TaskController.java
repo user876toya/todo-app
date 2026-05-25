@@ -4,13 +4,16 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.todoapp.form.TaskAddForm;
 import com.example.todoapp.service.TaskService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -23,6 +26,7 @@ public class TaskController {
                                 Model model) {
         model.addAttribute("listId", listId);
         model.addAttribute("tasks",taskService.findByTodoListId(listId));
+        model.addAttribute("taskAddForm", new TaskAddForm());
         return "tasks";
     }
 
@@ -38,8 +42,18 @@ public class TaskController {
 
     @PostMapping("/lists/{listId}/tasks")
     public String createTask(@PathVariable Long listId,
-                             @RequestParam String content) {
-        taskService.createTask(listId, content);
+                             @Valid TaskAddForm taskAddForm,
+                             BindingResult bindingResult,
+                             Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("listId", listId);
+            model.addAttribute("tasks", taskService.findByTodoListId(listId));
+            model.addAttribute("taskAddForm", taskAddForm);
+            return "tasks";
+        }
+
+        taskService.createTask(listId, taskAddForm.getContent());
         return "redirect:/lists/{listId}/tasks";
     }
 
