@@ -2,6 +2,7 @@ package com.example.todoapp.entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ public class Task {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 255)
     private String content;
 
     private LocalDate dueDate;
@@ -25,6 +27,6 @@ public class Task {
     private boolean done;
 
     @ManyToOne
-    @JoinColumn(name = "list_id")
+    @JoinColumn(name = "list_id", nullable=false)
     private TodoList todoList;
 }
