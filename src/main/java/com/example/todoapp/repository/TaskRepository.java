@@ -11,4 +11,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByTodoListId(Long listId);
 
     Optional<Task> findByIdAndTodoListId(Long taskId, Long listId);
+
+    void deleteByTodoListId(Long listId);
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.todoapp.entity.Task;
 import com.example.todoapp.entity.TodoList;
+import com.example.todoapp.exception.ResourceNotFoundException;
 import com.example.todoapp.form.TaskEditForm;
 import com.example.todoapp.repository.TaskRepository;
 import com.example.todoapp.repository.TodoListRepository;
@@ -22,14 +23,20 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final TodoListRepository todoListRepository;
 
+    private TodoList findTodoListById(Long listId) {
+        return todoListRepository.findById(listId)
+            .orElseThrow(() -> new ResourceNotFoundException("リストが見つかりません: " + listId));
+    }
+
     @Transactional
     public Task findTaskByIdAndListId(Long taskId, Long listId) {
         return taskRepository.findByIdAndTodoListId(taskId, listId)
-            .orElseThrow(() -> new IllegalArgumentException("タスクが見つかりません"));
+            .orElseThrow(() -> new ResourceNotFoundException("タスクが見つかりません"));
     }
 
     @Transactional
     public List<Task> findByTodoListId(Long listId) {
+        findTodoListById(listId);
         return taskRepository.findByTodoListId(listId);
     }
 
@@ -47,8 +54,7 @@ public class TaskService {
 
     @Transactional
     public void createTask(Long listId, String content, LocalDate dueDate) {
-        TodoList todoList = todoListRepository.findById(listId)
-                .orElseThrow(() -> new IllegalArgumentException("リストが見つかりません: " + listId));
+        TodoList todoList = findTodoListById(listId);
 
         Task task = new Task();
         task.setContent(content);
